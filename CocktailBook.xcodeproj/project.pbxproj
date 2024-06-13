@@ -129,6 +129,7 @@
 		18901A442C1331B500684897 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E8324EAC2620774B00FD2124 /* MainScreenViewController.swift */,
 				18901A452C1331D100684897 /* MainScreen.swift */,
 				18901A472C13321200684897 /* DetailsScreen.swift */,
 				1807182D2C1A7E5900ACF83D /* CocktailRow.swift */,
@@ -155,15 +156,10 @@
 		E8324E6D262076EB00FD2124 = {
 			isa = PBXGroup;
 			children = (
-				180718312C1AA61600ACF83D /* FavoritesManagerTests */,
-				180718282C1A7DA900ACF83D /* ViewModel */,
-				18901A4C2C14805000684897 /* Utility */,
-				18901A492C13523200684897 /* Model */,
-				18901A442C1331B500684897 /* View */,
-				E8324EBD26207B0900FD2124 /* CocktailsAPI */,
 				E8324E78262076EB00FD2124 /* CocktailBook */,
 				E8324E8F262076EE00FD2124 /* CocktailBookTests */,
 				E8324E9A262076EE00FD2124 /* CocktailBookUITests */,
+				180718312C1AA61600ACF83D /* FavoritesManagerTests */,
 				E8324E77262076EB00FD2124 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -186,7 +182,11 @@
 				E8324E7F262076EE00FD2124 /* Assets.xcassets */,
 				E8324E84262076EE00FD2124 /* LaunchScreen.storyboard */,
 				E8324E87262076EE00FD2124 /* Info.plist */,
-				E8324EAC2620774B00FD2124 /* MainScreenViewController.swift */,
+				180718282C1A7DA900ACF83D /* ViewModel */,
+				18901A4C2C14805000684897 /* Utility */,
+				18901A492C13523200684897 /* Model */,
+				18901A442C1331B500684897 /* View */,
+				E8324EBD26207B0900FD2124 /* CocktailsAPI */,
 			);
 			path = CocktailBook;
 			sourceTree = "<group>";
