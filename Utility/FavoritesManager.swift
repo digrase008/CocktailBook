@@ -8,7 +8,15 @@
 import Foundation
 
 
-class FavoritesManager {
+protocol FavoritesManaging {
+    func saveFavorites(_ favorites: [String])
+    func loadFavorites() -> [String]
+    func addFavorite(_ id: String)
+    func removeFavorite(_ id: String)
+    func isFavorite(_ id: String) -> Bool
+}
+
+class FavoritesManager: FavoritesManaging, ObservableObject {
     private let favoritesKey = "favoriteCocktails"
     
     func saveFavorites(_ favorites: [String]) {

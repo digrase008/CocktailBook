@@ -17,44 +17,47 @@ class CocktailBookTests: XCTestCase {
         favoritesManager = nil
         cocktailsAPI = nil
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
     
-    func testLoadCocktailsWithRetries() throws {
-            let expectation = XCTestExpectation(description: "Cocktails loaded after multiple failures")
+    func testLoadCocktailsSuccess() throws {
+            // Create a fake cocktails API that always succeeds
+            cocktailsAPI = FakeCocktailsAPI(withFailure: .never)
+            let viewModel = MainScreenViewModel(cocktailsAPI: cocktailsAPI, favoritesManager: favoritesManager)
             
-            var attempt = 0
-            func attemptLoadCocktails() {
-                cocktailsAPI.fetchCocktails { result in
-                    attempt += 1
-                    switch result {
-                    case .success(let data):
-                        do {
-                            let decodedCocktails = try JSONDecoder().decode([Cocktail].self, from: data)
-                            XCTAssertEqual(decodedCocktails.count, 13, "Expected 13 cocktails to be loaded")
-                            XCTAssertEqual(attempt, 2, "Expected 3 failures before success")
-                            expectation.fulfill()
-                        } catch {
-                            XCTFail("Decoding error: \(error)")
-                        }
-                    case .failure(let error):
-                        if attempt < 2 {
-                            attemptLoadCocktails()
-                        } else {
-                            XCTFail("Expected success after 3 failures, but received an error: \(error)")
-                        }
-                    }
-                }
+            let expectation = XCTestExpectation(description: "Cocktails loaded successfully")
+            
+            viewModel.loadCocktails()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                // Assuming that the API call takes 2 seconds to complete also expecting 13 counts, if it vary can change test accordingly
+                XCTAssertEqual(viewModel.cocktails.count, 13, "Expected 13 cocktails to be loaded")
+                expectation.fulfill()
             }
             
-            attemptLoadCocktails()
-            
-            wait(for: [expectation], timeout: 10.0)
+            wait(for: [expectation], timeout: 3.0)
         }
         
+    func testLoadCocktailsFailure() throws {
+        cocktailsAPI = FakeCocktailsAPI(withFailure: .count(2))
+        let viewModel = MainScreenViewModel(cocktailsAPI: cocktailsAPI, favoritesManager: favoritesManager)
+        
+        let expectation = XCTestExpectation(description: "Cocktails loading failed")
+        
+        viewModel.loadCocktails()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            // Can increase the time according how much time API can take
+            
+            XCTAssertFalse(viewModel.isLoading, "Loading should finish after failure")
+            
+            // Can change below string accourding to Error message which configured
+            XCTAssertTrue(viewModel.errorMessage.contains("API unavailable"), "Expected error message")
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
         func testToggleFavorite() throws {
             let cocktail = Cocktail(
                         id: "7",

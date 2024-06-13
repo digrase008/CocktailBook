@@ -28,7 +28,7 @@ class MainScreenViewController: UIViewController {
         label.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
 
-        cocktailsAPI.fetchCocktails { result in
+        /*cocktailsAPI.fetchCocktails { result in
             if case let .success(data) = result {
                 if let jsonString = String(data: data, encoding: .utf8) {
                     DispatchQueue.main.async {
@@ -36,6 +36,6 @@ class MainScreenViewController: UIViewController {
                     }
                 }
             }
-        }
+        }*/
     }
 }

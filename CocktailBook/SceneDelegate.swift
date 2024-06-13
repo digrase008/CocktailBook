@@ -9,13 +9,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if let windowScene = scene as? UIWindowScene {
         let window = UIWindow(windowScene: windowScene)
 //        window.rootViewController = MainScreenViewController()
-        if CommandLine.arguments.contains("UITest_FailureAPI") {
+        /*if CommandLine.arguments.contains("UITest_FailureAPI") {
             let mainScreen = MainScreen(cocktailsAPI: FakeCocktailsAPI(withFailure: .count(2)))
             window.rootViewController = UIHostingController(rootView: mainScreen)
         } else {
             window.rootViewController = UIHostingController(rootView: MainScreen())
-        }
-
+        }*/
+        window.rootViewController = UIHostingController(rootView: MainScreen())
         self.window = window
         window.makeKeyAndVisible()
     }

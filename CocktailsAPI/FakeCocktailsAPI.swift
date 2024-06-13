@@ -23,48 +23,24 @@ class FakeCocktailsAPI: CocktailsAPI {
         self.failure = failure
     }
     
-    var cocktailsPublisher: AnyPublisher<[Cocktail], CocktailsAPIError> { //Data
-        if case let .count(count) = failure {
-            failure = count - 1 == 0 ? .never : .count(count - 1)
-            return Future<[Cocktail], CocktailsAPIError> { [weak self] promise in
-                self?.queue.async {
-//                    sleep(3)
-//                    return promise(.failure(.unavailable))
-                    promise(.failure(.unavailable))
-                }
-            }
-            .eraseToAnyPublisher()
-        }
-        let data = jsonData
-        return Future<[Cocktail], CocktailsAPIError> { [weak self] promise in
-            self?.queue.async {
-//                sleep(3)
-//                return promise(.success(data))
-                let decoder = JSONDecoder()
-                do {
-                    let cocktails = try decoder.decode([Cocktail].self, from: data)
-                    promise(.success(cocktails))
-                } catch {
-                        promise(.failure(.unavailable))
-                }
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    func fetchCocktails(_ handler: @escaping (Result<Data, CocktailsAPIError>) -> Void) {
+    func fetchCocktails(completion: @escaping (Result<[Cocktail], Error>) -> Void) {
         if case let .count(count) = failure {
             failure = count - 1 == 0 ? .never : .count(count - 1)
             queue.async {
-//                sleep(3)
-                handler(.failure(.unavailable))
+                completion(.failure(CocktailsAPIError.unavailable))
             }
             return
         }
         let data = jsonData
+        print(jsonData)
         queue.async {
-//            sleep(3)
-            handler(.success(data))
+            do {
+                let cocktails = try JSONDecoder().decode([Cocktail].self, from: data)
+                completion(.success(cocktails))
+            } catch {
+                print(error)
+                completion(.failure(error))
+            }
         }
     }
 }
